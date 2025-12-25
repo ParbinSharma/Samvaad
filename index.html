@@ -1,0 +1,166 @@
+<html>
+<head>
+  <meta name="theme-color" content="#001C30" />
+<meta name="viewport" content="width=1024" />
+<title>Samvaad</title>
+<link rel="stylesheet" href="Style.css" type="text/css" media="all" />
+<link rel="icon" type="image/x-icon" href="Media/S2.png" />
+</head>
+<style>body{overflow: hidden};</style>
+<body>
+  
+  
+<div class="loader" id="loader">
+<img src="Media/loader.gif" alt="" />
+</div>
+
+
+<div class="contents" id="contents">
+
+
+<nav>
+<div class="logo-div">
+<img class="logo" src="Media/S2.png" alt="" />
+</div>
+
+<div class="nav-options">
+<button onclick="window.location.href ='https://github.com/ParbinSharma'">Developer</button>
+<button onclick="window.location.href='Index.html' type="submit">Info</button>
+<button onclick="window.location.href='Contact.html';" type="submit">Contact</button>
+</div>
+
+<div class="register-login">
+<button class="log-btn" onclick="window.location.href='Login.php';" type="submit">Login</button>
+<button class="reg-btn" onclick="window.location.href='Signup.php';" type="submit">Register</button>
+</div>
+</nav>
+
+
+<div class="heading">
+<img src="Media/rm3.png" alt="" />
+<p class="heading2 typed-out">
+Unleash the potential of tomorrow's communication today.
+</p>
+<button class="explore" type="submit" id="explore" onclick="myFunction()">Learn More</button>
+</div>
+
+<div class="div" id="div">
+<h1>Welcome to Samvaad</h1>
+<div class="divide1">
+  <div>
+      <h3>Instant Messaging Redefined</h3>
+<p>At Samvaad, we understand the importance of seamless and secure communication. Our platform offers instant messaging capabilities that allow you to stay connected with friends, family, and colleagues effortlessly.</p>
+<br/>
+  </div>
+<div>
+  <img class="display-img" src="Media/network.jpg" alt="" />
+</div>
+</div>
+
+
+<div class="divide2">
+  <div>
+       <img class="display-img" src="Media/datastorage.jpeg" alt="" />
+  </div>
+  <div>
+     <h3>Minimal Data Storage</h3>
+<p>Our innovative technology ensures that your data footprint is minimal. We prioritize your privacy and ensure that almost no data storage is required, providing you with a clean and efficient messaging experience.</p>
+<br/>
+  </div>
+</div>
+
+
+<div class="divide1">
+  <div>
+    <h3>Enhanced Security</h3>
+<p>Security is at the forefront of our service. With end-to-end encryption, you can rest assured that your conversations remain private and protected from unauthorized access. Your peace of mind is our priority.</p>
+<br />
+  </div>
+  <div>
+    <img class="display-img" src="Media/security.jpeg" alt="" />
+  </div>
+</div>
+
+
+<div class="divide2">
+  <div>
+  <img class="display-img" src="Media/connect.jpg" alt="" />
+  </div>
+<div>
+        <h3>Connect and Communicate</h3>
+<p>Whether you are looking to catch up with loved ones or collaborate with colleagues, [Your Chatting App Name] is your go-to solution. Our platform bridges the gap, making it easier than ever to connect and communicate with those who matter most.</p>
+<br />
+</div>
+</div>
+
+
+<h3>Why Choose Samvaad?</h3>
+<ul class="ul">
+  <li><b>Instant Messaging &nbsp; : &nbsp;</b>Experience real-time communication without delays.</li>
+  <li><b>Minimal Data Storage &nbsp; : &nbsp;</b>Enjoy a clutter-free, efficient messaging environment.</li>
+  <li><b>Secure Chats &nbsp; : &nbsp; </b>Benefit from robust end-to-end encryption.</li>
+  <li><b>User-Friendly Interface &nbsp; : &nbsp;</b>Navigate effortlessly and connect with ease.</li>
+</ul>
+
+<div class="footer">
+  <h3><b>Join us at Samvaad and redefine the way you communicate.</b></h3>
+</div>
+
+
+
+
+</div>
+
+
+<video autoplay="true" id="video" muted="true" loop>
+<source src="Media/banner.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+</div>
+</body>
+<script type="text/javascript" charset="utf-8">
+function myFunction() {
+const element = document.getElementById("div");
+element.scrollIntoView();
+}
+//function disableScroll() {
+// Get the current page scroll position in the vertical direction
+//  scrollTop =
+//  window.pageYOffset || document.documentElement.scrollTop;
+
+
+// Get the current page scroll position in the horizontal direction
+
+//  scrollLeft =
+//  window.pageXOffset || document.documentElement.scrollLeft;
+
+
+// if any scroll is attempted,
+// set this to the previous value
+// window.onscroll = function() {
+//   window.scrollTo(scrollLeft, scrollTop);
+//  };
+// }
+
+
+
+
+
+
+document.onreadystatechange = function () {
+if (document.readyState !== "complete") {
+document.querySelector("#contents").style.visibility = "hidden";
+
+document.querySelector("#loader").style.visibility = "visible";
+} else {
+document.querySelector(
+"#loader").style.display = "none";
+document.querySelector("#contents").style.visibility = "visible";
+}
+};
+
+
+
+
+</script>
+</html>

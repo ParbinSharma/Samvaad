@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <link rel="stylesheet" href="Style.css" type="text/css" media="all" />
+        <link rel="icon" type="image/x-icon" href="Media/icon.png"/>
+    <meta name="viewport" content="width=device-width/, initial-scale=1.0">
+    <title>Desktop Only Website</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .message-box {
+            text-align: center;
+            padding: 40px;
+            max-width: 500px;
+            background-color: #0F969C;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .message-box h1 {
+            color: rgba(46,223,239,1) !important;
+            margin-bottom: 15px;
+        }
+
+        .message-box p {
+            color: rgba(46,223,239,1) !important;
+            font-size: 16px;
+        }
+
+        .desktop-content {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo-div">
+      <img class="logo" src="Media/S2.png" alt="" />
+        </div>
+        
+        <div class="nav-options">
+<button type="submit" onclick="window.location.href ='https://github.com/ParbinSharma'">Developer</button>
+<button onclick="window.location.href='index.html';" type="submit">Info</button>
+<button onclick="window.location.href='Settings.php';" type="submit">Contact</button>
+        </div>
+        
+        <div class="register-login">
+<button class="log-btn" onclick="window.location.href='Login.php';" type="submit">Login</button>
+<button class="reg-btn" onclick="window.location.href='Signup.php';" type="submit">Register</button>
+        </div>
+      </nav>
+    <!-- Mobile Warning -->
+    <div class="message-box" id="mobileWarning">
+        <h1>Desktop Required</h1>
+        <p>
+            This website is designed for desktop or laptop use only.
+            <br><br>
+            Please open this website on a desktop device for the best experience.
+        </p>
+    </div>
+
+    <!-- Desktop Content -->
+    <div class="desktop-content" id="desktopContent">
+        <h1>Welcome to Our Website</h1>
+        <p>You are using a supported desktop device.</p>
+    </div>
+
+    <script>
+        function checkDevice() {
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                document.getElementById("mobileWarning").style.display = "block";
+                document.getElementById("desktopContent").style.display = "none";
+            } else {
+                document.getElementById("mobileWarning").style.display = "none";
+                document.getElementById("desktopContent").style.display = "block";
+            }
+        }
+
+        // Run on load and resize
+        window.onload = checkDevice;
+        window.onresize = checkDevice;
+    </script>
+
+</body>
+</html>

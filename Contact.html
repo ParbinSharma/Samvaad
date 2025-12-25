@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Samvaad : Contact</title>
+      <link rel="icon" type="image/x-icon" href="Media/S2.png" />
+
+<link rel="stylesheet" href="Style.css" type="text/css" media="all" />
+  </head>
+  <body style="overflow: hidden;">
+      <header>
+    <!-- <div class="navbar">
+      <div class="flex">
+        <img src="maruth.jfif" alt=""><div class="logo">
+          MARUTH
+        </div>
+      </div>
+      <!-- <div class="logo">MARUTH</div> -->
+      <!-- <img id="menubtn" src="Media/menu.png" alt="" />
+      <img id="crossbtn" src="Media/cross.png" alt="" />
+    </div>
+  </header>
+  <div id="menu">
+    <ul>
+      <li><button onclick="window.location.href='index.html';">Home</button></li>
+            <li><button onclick="window.location.href='Blog.html';">Blogs</button></li>
+      <li><button onclick="window.location.href='Graph.html';">Graph view</button></li>
+      <li><button onclick="window.location.href='Ai.html';">Maruth : Ai</button></li>
+      <li><button onclick="window.location.href='Contact.html';">Contact</button></li>
+    </ul>
+  </div> --> -->
+   <nav>
+        <div class="logo-div">
+      <img class="logo" src="Media/S2.png" alt="" />
+        </div>
+        
+        <div class="nav-options">
+<button type="submit" onclick="window.location.href ='https://github.com/ParbinSharma'">Developer</button>
+<button onclick="window.location.href='index.html';" type="submit">Info</button>
+<button onclick="window.location.href='Settings.php';" type="submit">Contact</button>
+        </div>
+        
+        <div class="register-login">
+<button class="log-btn" onclick="window.location.href='Login.php';" type="submit">Login</button>
+<button class="reg-btn" onclick="window.location.href='Signup.php';" type="submit">Register</button>
+        </div>
+      </nav>
+      <div class="cover" style="z-index: -10;">
+                    <video autoplay="true" muted="true" loop id="vedioElement">
+  <source src="Media/login_banner.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+      </div>
+      <div class="wrap2">
+    <div class="contact" id="contact">
+<form action="https://formsubmit.co/sharmaparbin91@gmail.com" method="POST">
+<input type="text" class="input" name="name" placeholder="Name" required />
+<input class="input" placeholder='Email' type="email" name="email" required />
+<input class="input" type="hidden" name="_subject" value="New Mail :PARBIN" />
+<input class="input" placeholder='Subject' type="text" name="subject" required />
+<textarea placeholder="Your Message" class="input" name="message" rows="10" required></textarea>
+<input type="text" name="_honey" style='display:none' />
+<input type="hidden" name="_autoresponse" value="We have recieved your email." />
+<input type="hidden" name="_template" value="table" /><br />
+<button class='but' type="submit">Submit</button>
+</form>
+</div>
+</div>
+  </body>
+  <script type="text/javascript" charset="utf-8">
+    let menu_btn=document.getElementById("menubtn");
+let close_btn=document.getElementById("crossbtn");
+let contact=document.getElementById("contact");
+menu_btn.addEventListener("click",function(){
+  close_btn.style.display="block";
+  menu_btn.style.display="none";
+  menu.style.display="flex";
+  window.scrollTo(0,0);
+});
+close_btn.addEventListener("click", function() {  // Added missing functionality
+  close_btn.style.display = "none";
+  menu_btn.style.display = "block";
+  menu.style.display = "none";
+  window.scrollTo(0,0);
+});
+  </script>
+</html>

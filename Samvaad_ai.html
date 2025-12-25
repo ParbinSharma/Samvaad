@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samvaad : AI</title>
+  <link rel="icon" type="image/x-icon" href="Media/S2.png" />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <style type="text/css" media="all">
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    :root {
+      --text-color: #E3E3E3; --subheading-color: #828282; --placeholder-color: #A6A6A6;
+      --primary-color: #242424; --secondary-color: #383838; --secondary-hover-color: #444;
+    }
+    body { background: var(--primary-color); color: var(--text-color); }
+    .header, .chat-list .message, .typing-form { margin: 0 auto; max-width: 1000px; }
+    .header { margin-top: 10vh; padding: 1rem; }
+    body.hide-header .header { display: none; }
+    .YOU{font-size:1.5rem; width: fit-content; background-clip: text; background: linear-gradient(to right, #4285f4, #d96570); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+    .header :where(.title, .subtitle) { font-weight: 600; }
+    .header .title { font-size: 2.7rem; width: fit-content; background-clip: text; background: linear-gradient(to right, #4285f4, #d96570); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header .subtitle { font-size: 2.4rem; color: #444; }
+    .suggestion-list { margin-top: 9.5vh; list-style: none; display: flex; gap: 1.25rem; overflow-x: auto; scrollbar-width: none; }
+    .suggestion-list .suggestion { padding: 1.25rem; cursor: pointer; width: 227px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; border-radius: 0.75rem; background: var(--secondary-color); transition: 0.2s ease; }
+    .suggestion-list .suggestion:hover { background: var(--secondary-hover-color); }
+    .suggestion-list .suggestion .text { font-weight: 400; }
+    .suggestion-list .suggestion span { height: 42px; width: 42px; color: #4285f4; display: flex; background: #242424; border-radius: 50%; align-items: center; justify-content: center; }
+    .chat-list { padding: 2rem 1rem 12rem; }
+    .chat-list .message { display: flex; gap: 1.5rem; margin-top: 1.5rem; align-items: flex-start; }
+    .chat-list .message .avatar { width: 70px; height: 70px; object-fit: cover; border-radius: 50%; }
+    /* .chat-list .message.incoming .avatar { border: 1px solid #444; } */
+    .chat-list .message .text { padding: 0.2rem 0; line-height: 1.6; }
+    .chat-list .message .icon { cursor: pointer; height: 35px; width: 35px; display: flex; border-radius: 50%; align-items: center; justify-content: center; background: none; transition: 0.2s ease; }
+    .chat-list .message .icon:hover { background: var(--secondary-hover-color); }
+    .chat-list .loading-indicator { display: none; width: 100%; flex-direction: column; gap: 0.8rem; }
+    .chat-list .message.incoming.loading .loading-indicator { display: flex; }
+    .chat-list .message.incoming.loading .text { display: none; }
+    .chat-list .loading-indicator .loading-bar { height: 11px; width: 100%; border-radius: 0.14rem; background: linear-gradient(to right, #4285f4, var(--primary-color), #4285f4); animation: animate 3s linear infinite; }
+    .chat-list .loading-indicator .loading-bar:last-child { width: 70%; }
+    @keyframes animate { 0% { background-position: -800px 0; } 100% { background-position: 800px 0; } }
+    .typing-area { position: fixed; width: 100%; bottom: 0; padding: 1rem; background: var(--primary-color); }
+    .typing-area .input-wrapper { height: 56px; width: 100%; display: flex; position: relative; }
+    .typing-area .typing-input { width: 100%; height: 100%; border: none; outline: none; gap: 1rem; color: var(--text-color); font-size: 1rem; border-radius: 6.2rem; padding: 1.1rem 4rem 1.1rem 1.5rem; background: var(--secondary-color); }
+    .typing-area .typing-input:focus { background: var(--secondary-hover-color); }
+    .typing-area .input-wrapper span { position: absolute; right: 0; display: flex; justify-content: center; align-items: center; height: 100%; width: 56px; color: var(--text-color); cursor: pointer; }
+    .typing-area .disclaimer-text { text-align: center; font-size: 0.85rem; margin-top: 1rem; color: var(--subheading-color); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1 class="title">SAMVAAD AI</h1>
+    <h2 class="subtitle">How can I help you today?</h2>
+    <ul class="suggestion-list">
+      <li class="suggestion"><p class="text">Help me write a professional email to a client.</p><span class="material-symbols-rounded">edit</span></li>
+      <li class="suggestion"><p class="text">Suggest some fun activities for a family weekend.</p><span class="material-symbols-rounded">explore</span></li>
+      <li class="suggestion"><p class="text">Explain how the Internet of Things (IoT) works.</p><span class="material-symbols-rounded">lightbulb</span></li>
+      <li class="suggestion"><p class="text">Summarize the main benefits of a healthy lifestyle.</p><span class="material-symbols-rounded">description</span></li>
+    </ul>
+  </header>
+
+  <div class="chat-list"></div>
+
+  <div class="typing-area">
+    <form action="#" class="typing-form">
+      <div class="input-wrapper">
+        <input type="text" placeholder="Enter a prompt here" class="typing-input" required />
+        <span id="send-message-btn" class="material-symbols-rounded">send</span>
+      </div>
+    </form>
+    <p class="disclaimer-text">It is powered by Google's Gemini AI</p>
+    <button id="delete-chat-btn" style="margin-top: 5px; background: none; border: none; color: red; cursor: pointer; font-size: 0.8rem;">Delete All Chats</button>
+  </div>
+
+  <script>
+    const typingForm = document.querySelector(".typing-form");
+    const chatContainer = document.querySelector(".chat-list");
+    const suggestions = document.querySelectorAll(".suggestion");
+    const deleteChatButton = document.querySelector("#delete-chat-btn");
+
+    // Replace with your actual API Key
+    const API_KEY = "AIzaSyB6mp6IgedLRToUJN8oQci8-DltLwy_Wlg"; 
+    
+    // Switch to 2.5-flash for more stable Free Tier usage
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+
+    let userMessage = null;
+    let isResponseGenerating = false;
+
+    const loadDataFromLocalstorage = () => {
+      const savedChats = localStorage.getItem("saved-chats");
+      if(savedChats) {
+        chatContainer.innerHTML = savedChats;
+        document.body.classList.add("hide-header");
+        chatContainer.scrollTo(0, chatContainer.scrollHeight);
+      }
+    }
+
+    const createMessageElement = (content, ...classes) => {
+      const div = document.createElement("div");
+      div.classList.add("message", ...classes);
+      div.innerHTML = content;
+      return div;
+    }
+
+    const showLoadingAnimation = () => {
+      const html = `<div class="message-content">
+                      <img class="avatar" src="Media/ai2.gif" alt="Gemini">
+                      <div class="loading-indicator">
+                        <div class="loading-bar"></div><div class="loading-bar"></div><div class="loading-bar"></div>
+                      </div>
+                    </div>
+                    <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>`;
+      const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
+      chatContainer.appendChild(incomingMessageDiv);
+      chatContainer.scrollTo(0, chatContainer.scrollHeight);
+      generateAPIResponse(incomingMessageDiv);
+    }
+
+    const generateAPIResponse = async (incomingMessageDiv) => {
+      const textElement = incomingMessageDiv.querySelector(".loading-indicator");
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: userMessage }] }]
+          }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error.message);
+
+        const apiResponse = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1");
+        
+        // Remove loading state and show text
+        incomingMessageDiv.classList.remove("loading");
+        incomingMessageDiv.innerHTML = `<div class="message-content">
+                                          <img class="avatar" src="Media/ai2.gif" alt="Gemini">
+                                          <p class="text"></p>
+                                        </div>
+                                        <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>`;
+        
+        incomingMessageDiv.querySelector(".text").innerText = apiResponse;
+      } catch (error) {
+        incomingMessageDiv.classList.remove("loading");
+        const errorMsg = error.message.includes("429") ? "Quota exceeded. Please wait 1 minute before trying again." : error.message;
+        incomingMessageDiv.querySelector(".message-content").innerHTML = `<p style="color: #ff4444;">${errorMsg}</p>`;
+      } finally {
+        isResponseGenerating = false;
+        localStorage.setItem("saved-chats", chatContainer.innerHTML);
+        chatContainer.scrollTo(0, chatContainer.scrollHeight);
+      }
+    }
+
+    const handleOutgoingChat = () => {
+      userMessage = typingForm.querySelector(".typing-input").value.trim() || userMessage;
+      if(!userMessage || isResponseGenerating) return;
+
+      isResponseGenerating = true;
+      const html = `<div class="message-content">
+<p class="YOU">YOU</p>
+  <p class="text"></p>
+                    </div>`;
+      
+      const outgoingMessageDiv = createMessageElement(html, "outgoing");
+      outgoingMessageDiv.querySelector(".text").innerText = userMessage;
+      chatContainer.appendChild(outgoingMessageDiv);
+      
+      typingForm.reset();
+      document.body.classList.add("hide-header");
+      chatContainer.scrollTo(0, chatContainer.scrollHeight);
+      setTimeout(showLoadingAnimation, 500);
+    }
+
+    deleteChatButton.addEventListener("click", () => {
+      if (confirm("Are you sure you want to delete all chats?")) {
+        localStorage.removeItem("saved-chats");
+        location.reload();
+      }
+    });
+
+    suggestions.forEach(suggestion => {
+      suggestion.addEventListener("click", () => {
+        userMessage = suggestion.querySelector(".text").innerText;
+        handleOutgoingChat();
+      });
+    });
+
+    typingForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      handleOutgoingChat();
+    });
+
+    loadDataFromLocalstorage();
+  </script>
+</body>
+</html>

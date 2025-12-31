@@ -1,4 +1,5 @@
 <?php
+
 require('db_connect.php');
 session_start();
 if (!isset($_COOKIE['loggedin']) || $_COOKIE['loggedin'] != true) {
@@ -14,7 +15,7 @@ $Username = $_COOKIE['Username'];
 
 
 //$description = $_SESSION['description'];
-$get_info_sql = "SELECT * FROM `Student_acc` WHERE `Username`='$Username'";
+$get_info_sql = "SELECT * FROM `student_acc` WHERE `Username`='$Username'";
 $get_info = mysqli_query($conn, $get_info_sql);
 $row = mysqli_fetch_assoc($get_info);
 //$description = $row['Description'];
@@ -214,7 +215,7 @@ cursor: pointer;
 <div class="nav-options">
 <button type="submit" onclick="window.location.href ='https://github.com/ParbinSharma'">Developer</button>
 <button type="submit" onclick="window.location.href ='/index.html'">Info</button>
-<button type="submit" onclick="window.location.href ='/Settings.php'">Contact</button>
+<button type="submit" onclick="window.location.href ='https://parbinsharma.github.io/Samvaad/Contact.html'">Contact</button>
 </div>
 
 <div class="register-login">

@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 require('db_connect.php');
 $pdnm=false;
@@ -16,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $year_s = mysqli_real_escape_string($conn,$_POST["year"]);
   $c_password_s =mysqli_real_escape_string($conn,$_POST["confirm_password"]);
   $hashed_password_s = password_hash($password_s, PASSWORD_DEFAULT);
-  $check_sql = "SELECT * FROM `Student_acc` WHERE `Username`='$username_s'";
+  $check_sql = "SELECT * FROM `student_acc` WHERE `Username`='$username_s'";
   $check = mysqli_query($conn, $check_sql);
   $rows = mysqli_num_rows($check);
   if ($rows > 0) {
@@ -24,17 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   } else {
     if ($password_s == $c_password_s) {
 
-      $sql = "INSERT INTO `Student_acc` (`Name`, `Username`, `Password`,`Off_email`,`Department`,`Year`) VALUES ('$name_s', '$username_s', '$hashed_password_s','$email_s','$department_s','$year_s');";
+      $sql = "INSERT INTO `student_acc` (`Name`, `Username`, `Password`,`Off_email`,`Department`,`Year`) VALUES ('$name_s', '$username_s', '$hashed_password_s','$email_s','$department_s','$year_s');";
       $insert = mysqli_query($conn, $sql);
       // $date=getdate();
       // $year = $date['year'];
    //   $activity_sql="INSERT INTO `ActivityChart` (`Id`,`Username`,`Year`,`Jan`,`Feb`,`Mar`,`Apr`,`May`,`Jun`,`Jul`,`Aug`,`Sept`,`Oct`,`Nov`,`Decem`) VALUES (NULL,'$username','$year',0,0,0,0,0,0,0,0,0,0,0,0)";
    //   $activity = mysqli_query($conn, $activity_sql);
       
-   $join_samvaad_sql = "INSERT INTO `Chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'Samvaad')";
-   $join_BEE_sql = "INSERT INTO `Chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'BEE')";
-   $join_PHYSICS_sql = "INSERT INTO `Chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'PHYSICS')";
-   $join_MATHEMATICS_sql = "INSERT INTO `Chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'MATHEMATICS')";
+   $join_samvaad_sql = "INSERT INTO `chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'Samvaad')";
+   $join_BEE_sql = "INSERT INTO `chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'BEE')";
+   $join_PHYSICS_sql = "INSERT INTO `chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'PHYSICS')";
+   $join_MATHEMATICS_sql = "INSERT INTO `chat_members` (`member`, `Chat_id`) VALUES ('$username_s', 'MATHEMATICS')";
      $join_samvaad = mysqli_query($conn, $join_samvaad_sql);
     $join_BEE = mysqli_query($conn, $join_BEE_sql);
      $join_PHYSICS = mysqli_query($conn, $join_PHYSICS_sql);
@@ -106,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="nav-options">
 <button onclick="window.location.href ='https://github.com/ParbinSharma'">Developer</button>
 <button onclick="window.location.href='index.html';" type="submit">Info</button>
-<button onclick="window.location.href='Settings.php';" type="submit">Contact</button>
+<button onclick="window.location.href='https://parbinsharma.github.io/Samvaad/Contact.html';" type="submit">Contact</button>
 </div>
 
 <div class="register-login">

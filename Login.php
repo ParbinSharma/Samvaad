@@ -1,18 +1,85 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// session_start();
 require('db_connect.php');
 
 $anf=false;
 $wpas=false;
 $sww=false;
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+   if(isset($_POST['uid'])){
+  $uid=mysqli_real_escape_string($conn,$_POST['uid']);
+  $password=mysqli_real_escape_string($conn,$_POST['password']);
+   $login_sql_t="SELECT * FROM `teacher_acc` WHERE `UID`='$uid'";
+  $login_t=mysqli_query($conn,$login_sql_t);
+  
+  $row=mysqli_fetch_assoc($login_t);
+  $check_sql_t="SELECT * FROM `teacher_acc` WHERE `UID`='$uid'";
+  $check_t=mysqli_query($conn,$check_sql_t);
+
+  $num_t= mysqli_num_rows($check_t);
+     if ($num_t==1) {
+    if(password_verify($password,$row['Password'])){ 
+      setcookie('UID', $uid, time() + (86400 * 30), "/");
+      setcookie('Name', $row['Name'], time() + (86400 * 30), "/");
+      setcookie('Date', $row['Date'], time() + (86400 * 30), "/");
+      setcookie('Subject', $row['Subject'], time() + (86400 * 30), "/");
+      setcookie('LOGIN_TYPE','Teacher',time()+(86400*30),"/");
+    //  setcookie('Dob', $row['Dob'], time() + (86400 * 30), "/");
+      setcookie('Email', $row['Off_email'], time() + (86400 * 30), "/");
+     setcookie('Username', ' ', time() + (86400 * 30), "/");
+
+   //   setcookie('Description', $row['Description'], time() + (86400 * 30), "/");
+      setcookie('loggedin',true, time() + (86400 * 30), "/");
+    session_start();
+    
+    $_SESSION['loggedin'] = true;
+        $_SESSION['UID'] = $_COOKIE['UID'];
+        $_SESSION['name'] = $row['Name'];
+
+        header("location: Profile.php");
+        $loggedin=true;
+  }
+  else {
+    $wpas=true;
+  }
+  }
+  else{
+    $anf=true;
+  }
+if (!$login_t) {
+    $sww=true;
+    $anf=false;
+  }
+if (!$check_t) {
+    $sww=true;
+    $anf=false;
+    $wpas=false;
+  }
+
+
+   }
+
+
+
+
+
+
+
+
+
+    if(isset($_POST['username_s'])){
   $username_s=mysqli_real_escape_string($conn,$_POST['username_s']);
   $password_s=mysqli_real_escape_string($conn,$_POST['password_s']);
   
-  $login_sql="SELECT * FROM `Student_acc` WHERE `Username`='$username_s'";
+  $login_sql="SELECT * FROM `student_acc` WHERE `Username`='$username_s'";
   $login=mysqli_query($conn,$login_sql);
   
   $row=mysqli_fetch_assoc($login);
-  $check_sql="SELECT * FROM `Student_acc` WHERE `Username`='$username_s'";
+  $check_sql="SELECT * FROM `student_acc` WHERE `Username`='$username_s'";
   $check=mysqli_query($conn,$check_sql);
 
   $num= mysqli_num_rows($check);
@@ -25,6 +92,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //  setcookie('Dob', $row['Dob'], time() + (86400 * 30), "/");
       setcookie('Email', $row['Off_email'], time() + (86400 * 30), "/");
    //   setcookie('Description', $row['Description'], time() + (86400 * 30), "/");
+         setcookie('LOGIN_TYPE','Student',time()+(86400*30),"/");
+     setcookie('UID',' ', time() + (86400 * 30), "/");
+
       setcookie('loggedin',true, time() + (86400 * 30), "/");
     session_start();
     
@@ -32,7 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $_SESSION['username'] = $_COOKIE['Username'];
         $_SESSION['name'] = $row['Name'];
 
-        header("location: Dashboard.php");
+        header("location: Profile.php");
         $loggedin=true;
   }
   else {
@@ -54,7 +124,7 @@ if (!$check) {
 
 
 }
-
+}
   
 
 ?>
@@ -96,7 +166,7 @@ if (!$check) {
         <div class="nav-options">
 <button type="submit" onclick="window.location.href ='https://github.com/ParbinSharma'">Developer</button>
 <button onclick="window.location.href='index.html';" type="submit">Info</button>
-<button onclick="window.location.href='Settings.php';" type="submit">Contact</button>
+<button onclick="window.location.href='https://parbinsharma.github.io/Samvaad/Contact.html';" type="submit">Contact</button>
         </div>
         
         <div class="register-login">
@@ -149,7 +219,7 @@ if ($sww) {
           <input class="credentials" type="password" name="password_s" id="password_s" placeholder="Password" required/>
           <input class="submit" type="submit" value="Login"/>
         </form>
-   <form class="form" id="teacher_form" action="Logn.php" method="post">
+   <form class="form" id="teacher_form" action="Login.php" method="post">
           <input class="credentials" type="text" name="uid" id="uid" placeholder="UID" required/>
           <input class="credentials" type="password" name="password" id="password" placeholder="Password" required/>
           <input class="submit" type="submit" value="Login"/>

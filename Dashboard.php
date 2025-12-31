@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 
 require('db_connect.php');
@@ -29,12 +32,27 @@ $leaved=false;
                                          // $resulttt= "68his928gs";
                                         setcookie('loggedin',false,time() + (86400 * 30), "/");
                                         setcookie('Username'," ",time() + (86400 * 30), "/");
-                                         header("Location: Login.php");
+                                        setcookie('UID'," ",time() + (86400 * 30), "/");
+
+                                        header("Location: Login.php");
                                         } else {
                                          // $sww=true;
                                           //echo "prbl 1";
                                         }
-$Username = $_COOKIE['Username'];
+if ($_COOKIE['LOGIN_TYPE']==="Teacher") {
+  $Username = $_COOKIE['UID'];
+  $database = "teacher_acc";
+  $column= "UID";
+  echo "<style>#profile_icon{display:none;}</style>";
+} elseif($_COOKIE['LOGIN_TYPE']==="Student"){
+  $Username = $_COOKIE['Username'];
+ $database = "student_acc";
+  $column= "Username";
+}
+
+          
+                                        
+// $Username = $_COOKIE['Username'];
 $date = getdate();
 $month = $date['mon']; 
 $year = $date['year'];
@@ -52,7 +70,7 @@ if(isset($_POST['chat_name'])){
   $chat_name = mysqli_real_escape_string($conn,$_POST['chat_name']);
  global $id;
      $id=bin2hex(openssl_random_pseudo_bytes(5));
- $ins_sql="INSERT INTO `chat_bond` (`Chat_name`,`Chat_id`) VALUES ('$chat_name','$id')";
+ $ins_sql="INSERT INTO `chat_bond` (`Chat_Name`,`Chat_id`) VALUES ('$chat_name','$id')";
  $ins=mysqli_query($conn,$ins_sql);
   if ($ins) {
  $create_sql = "CREATE TABLE `$id` (
@@ -64,7 +82,7 @@ Time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   $create = mysqli_query($conn, $create_sql);
 
    if ($create) {
-    $join_sql = "INSERT INTO `chat_bond` (`Chat_name`, `id`) VALUES ('$Username', '$id')";
+    $join_sql = "INSERT INTO `chat_members` (`member`, `Chat_id`) VALUES ('$Username', '$id')";
 
     $join = mysqli_query($conn, $join_sql);
 header('location:Dashboard.php?data='.$id);
@@ -98,19 +116,19 @@ header('location:Dashboard.php?data='.$id);
   
   if(isset($_POST['join_name'])){
     $join_name = mysqli_real_escape_string($conn,$_POST['join_name']);
- $get_chat_name_sql="SELECT `Chat_name` FROM `Chat_bond` WHERE `Chat_id`='$join_name'";
+ $get_chat_name_sql="SELECT `Chat_Name` FROM `chat_bond` WHERE `Chat_id`='$join_name'";
 $get_chat_name=mysqli_query($conn,$get_chat_name_sql);
 $rew=mysqli_fetch_assoc($get_chat_name);
-$NAME=$rew["Chat_name"];
+$NAME=$rew["Chat_Name"];
     
     
     
-  $table_exist_sql = "SELECT * FROM `Chat_members` WHERE `Chat_id`='$join_name' AND `member`='$Username'";
+  $table_exist_sql = "SELECT * FROM `chat_members` WHERE `Chat_id`='$join_name' AND `member`='$Username'";
   $table_exists = mysqli_query($conn, $table_exist_sql);
   $num_rows = mysqli_num_rows($table_exists);
 
 
-$check_sql="SELECT * FROM `Chat_bond` WHERE `Chat_id`='$join_name'";
+$check_sql="SELECT * FROM `chat_bond` WHERE `Chat_id`='$join_name'";
 $check= mysqli_query($conn,$check_sql);
 $check_num= mysqli_num_rows($check);
 
@@ -122,7 +140,7 @@ $check_num= mysqli_num_rows($check);
 if($check_num !==0){
      if($num_rows ==0){
   
-    $join2_sql = "INSERT INTO `Chat_members` (`Member`, `Chat_id`) VALUES ('$Username', '$join_name')";
+    $join2_sql = "INSERT INTO `chat_members` (`Member`, `Chat_id`) VALUES ('$Username', '$join_name')";
     $join2 = mysqli_query($conn, $join2_sql);
 //$resulttt=$join_name;
         // $join_samvaad_sql = "INSERT INTO `Room_members` (`Members`, `Rooms`) VALUES ('$Username', 'Samvaad')";
@@ -155,7 +173,7 @@ $rdne=true;
 $sql="SELECT * FROM `chat_bond` WHERE `Chat_id`='$resulttt'";
   $sq=mysqli_query($conn,$sql);
 $s=mysqli_fetch_assoc($sq);
-$i=$s['Chat_name'];
+$i=$s['Chat_Name'];
 if(isset( $_POST['message'])){
 
 
@@ -175,7 +193,12 @@ else{
 
 function logout() {
    // echo " <div class='loggedout'>
-  
+                                         // $resulttt= "68his928gs";
+                                        setcookie('loggedin',false,time() + (86400 * 30), "/");
+                                        setcookie('Username'," ",time() + (86400 * 30), "/");
+                                        setcookie('Username'," ",time() + (86400 * 30), "/");
+
+                                        header("Location: Login.php");
   session_destroy();
 header("location: Login.php");
 //   <div class='popup' style='background-color:yellow;'>
@@ -267,10 +290,10 @@ if ($leaved) {
 
 <div class="main-nav">
   <img class="icons" style="margin-top:20px" onclick="window.location.href ='/Dashboard.php'" src="Media/home50.png" alt="" />
-  <img class="icons" style="margin-top:50px" onclick="window.location.href ='/Profile.php'" src="Media/profile.png" alt="" />
+  <img class="icons" id="profile_icon" style="margin-top:50px" onclick="window.location.href ='/Profile.php'" src="Media/profile.png" alt="" />
   <img class="icons" onclick="window.location.href ='/index.html'" src="Media/about50.png" alt="" />
 
-  <img class="icons" onclick="window.location.href ='/Settings.php'" src="Media/settings50.png" alt="" />
+  <img class="icons" onclick="window.location.href ='https://parbinsharma.github.io/Samvaad/Contact.html'" src="Media/settings50.png" alt="" />
 <button name="Logout" id="Logout" class="logout"></button>
 </div>
 
@@ -304,7 +327,7 @@ if ($leaved) {
 
   <div class="room_box" id="room_box">
     <div class="popup">
-         <form action="Dashboard.php?data=<?php echo $Chat_id;?>" method="post"> 
+         <form action="Dashboard.php" method="post"> 
       <input type="text" class="c-j-input" name="chat_name" id="chat_name" placeholder="Name of the room" required/>
       <div class="options">
     <button type="button" class="can" onclick="turnoff2()">Cancel</button>
@@ -336,7 +359,7 @@ if ($leaved) {
  <form method="get" name="form" action="Dashboard.php">
 <div class="chat-box">
  <?php
-$all_rooms_sql = "SELECT * FROM `chat_members` WHERE `member`='$Username' ORDER BY `Chat_id` DESC";
+$all_rooms_sql = "SELECT * FROM `chat_members` WHERE `member`='$Username' ORDER BY `Serial_no` DESC";
 $all_rooms = mysqli_query($conn, $all_rooms_sql);
 
 while ($row = mysqli_fetch_assoc($all_rooms)) {
@@ -349,7 +372,7 @@ $rin=mysqli_fetch_assoc($seq);
 
 
 
-echo "<button type='submit' class='data' id='".$row['Chat_id']."' name='data' value='".$row['Chat_id']."'>".$rin['Chat_name']."</button>";
+echo "<button type='submit' class='data' id='".$row['Chat_id']."' name='data' value='".$row['Chat_id']."'>".$rin['Chat_Name']."</button>";
 // echo "<button type='submit' class='data' id='".$row['Chat_id']."' name='data' value='".$row['Chat_id']."'>".$rin['Chat_name']."</button>";
 
 }
@@ -367,14 +390,14 @@ function leave(){
  global $Username;
  global $resulttt;
  
- $leave_sql="DELETE FROM `Chat_members` WHERE `Chat_members`.`Member` = '$Username' AND `Chat_id` = '$resulttt'";
+ $leave_sql="DELETE FROM `chat_members` WHERE `chat_members`.`Member` = '$Username' AND `Chat_id` = '$resulttt'";
   $leave=mysqli_query($conn,$leave_sql);
   $isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile")); 
   
   if($isMob){ 
    $destination="redirect.html";
 }else{ 
-    $destination="Dashboard.php?data=samvaad";
+    $destination="Dashboard.php?data=Samvaad";
 }
   if ($leave) {
 // echo "<meta http-equiv='refresh' content='0;".$destination."' />";
@@ -500,7 +523,7 @@ echo "<div class='chat-row'>
 //}
 ?>  -->
 <!-- </div>
-</form> --> -->
+</form> -->
   
 
 
@@ -513,17 +536,24 @@ echo "<div class='chat-row'>
     
 
   <?php
-$sql_members="SELECT * FROM `Chat_members` WHERE `Chat_id`='$resulttt'";
+$sql_members="SELECT * FROM `chat_members` WHERE `Chat_id`='$resulttt'";
  $members=mysqli_query($conn,$sql_members);
  while ($member_names = mysqli_fetch_assoc($members)) {
    $parbin=$member_names['member'];
-   $sql69="SELECT * FROM `Student_acc` WHERE `Username`='$parbin'";
+   $sql69="SELECT * FROM `$database` WHERE `$column`='$parbin'";
    $query69=mysqli_query($conn,$sql69);
    if ($query69 && mysqli_num_rows($query69) > 0) {
    $row69 = mysqli_fetch_assoc($query69);
      
-    
-   $parbin_id=$row69['Username'];
+//     if ($_COOKIE['LOGIN_TYPE']==="Teacher") {
+//   $parbin_id=$row69['UID'];
+// } elseif($_COOKIE['LOGIN_TYPE']==="Student"){
+//     $parbin_id=$row69['Username'];
+
+// }
+
+      $parbin_id=$row69['Name'];
+
    
    echo '  <div class="mem-div">';
    
@@ -539,7 +569,7 @@ $sql_members="SELECT * FROM `Chat_members` WHERE `Chat_id`='$resulttt'";
   //    echo '<img src="Media/profile50.png"/>';
   //  }
    
-    echo '<button type="submit" disabled name="ProfileId" class="ProfileId" id="'.$parbin.'" value="'.$parbin_id.'">'.$parbin.'</button>
+    echo '<button type="submit" disabled name="ProfileId" class="ProfileId" id="'.$parbin.'" value="'.$parbin_id.'">'.$parbin_id.'</button>
    </div>';
  }
 }
@@ -573,7 +603,7 @@ $sql_members="SELECT * FROM `Chat_members` WHERE `Chat_id`='$resulttt'";
     Are you sure you want to leave this room?
   
     <div class="options">
-   <button type="button" onclick="turnoff()" style="color:white" class="can">Cancel</button>
+   <button type="button" onclick="turnoff2()" style="color:white" class="can">Cancel</button>
    <form method="post" action="Dashboard.php?data=<?php echo $resulttt?>">  <input type="submit" name="Lea" id="Lea" class="lea" style="margin-top:15px;margin-left:20px;" value="Confirm" />
       </form> 
     </div>
@@ -625,9 +655,11 @@ function turnoff(){
   logout_box.style.display="none";
  // leave_box.style.display="none";
   chatname.style.display="block";
-  roominfo.style.display="none";
+ roominfo.style.display="flex";
+
 }
 function turnoff2(){
+
   y.style.display="none";
   chatname.style.display="block";
   leave_box.style.display="none";
@@ -740,6 +772,7 @@ let logout_btn=document.getElementById('Logout');
 
 logout_btn.addEventListener("click",function(){
   logout_box.style.display='flex';
+ roominfo.style.display="none";
 });
 
 
